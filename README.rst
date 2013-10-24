@@ -19,7 +19,13 @@ An example form:
 ::
 
     class ExampleForm(forms.Form):
-        image = forms.FileField(widget=DropzoneInput(maxFilesize=10, acceptedFiles="image/*", upload_path='/upload/file'))
+        image = forms.FileField(
+                    widget=DropzoneInput(
+                        maxFilesize=10,
+                        acceptedFiles="image/*",
+                        upload_path='/upload/file'
+                    )
+                )
 
 
 Load in the following in your template:
@@ -33,8 +39,7 @@ Load in the following in your template:
 
 
 
-**See the example project for more detail. I've not got around to writing this more thoroughly yet**
-
+**See the example project for more detail. I've not got around to writing this more thoroughly yet.**
 
 
 Notes
