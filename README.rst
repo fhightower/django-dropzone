@@ -9,7 +9,7 @@ Not yet pip installable.
 
 Completely skinable.
 
-*Please note, this is **messy and unfinished**. It might not even work properly right now. It you want to improve it, go ahead and submit a pull request.*
+*Please note, this is messy and unfinished. It might not even work properly right now. It you want to improve it, go ahead and submit a pull request.*
 
 
 Usage
