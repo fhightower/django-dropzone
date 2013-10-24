@@ -1,3 +1,5 @@
+*Please note, this is messy and unfinished. It might not even work properly right now. It you want to improve it, go ahead and submit a pull request.*
+
 django-dropzone
 =========================================
 
@@ -8,8 +10,6 @@ Allows you to use a dropzone.js uploader instead of the traditional HTML file up
 Not yet pip installable.
 
 Completely skinable.
-
-*Please note, this is messy and unfinished. It might not even work properly right now. It you want to improve it, go ahead and submit a pull request.*
 
 
 Usage
