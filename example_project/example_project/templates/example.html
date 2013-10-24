@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+<head>
+
+  <link href="{% static "css/dropzone/dropzone.css" %}" type="text/css" rel="stylesheet" />
+
+  <title>Example Page</title>
+</head>
+
+<body>
+
+  {{ form.as_p }}
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="{% static "js/dropzone/dropzone.js" %}"></script>
+  <script src="{% static "js/dropzone/dropzone.django.js" %}"></script>
+  <script src="{% static "js/jquery.cookie.js" %}"></script>
+  <script src="{% static "js/example.js" %}"></script>
+
+</body>
+
+</html>
