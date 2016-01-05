@@ -25,13 +25,12 @@ $(function() {
     // File was successfully uploaded 
     djDropzone.on("success", function(file, response) {
       var file_url = JSON.parse(response)["file_url"];
-      console.log('File uploaded to url: ' + file_url);
-      dropzone_url.val(file_url);
+      dropzone_url.val(dropzone_url.val() + "," + file_url);
     });
 
     // Show error messages
     djDropzone.on("error", function(file, errorMessage) {
-      alert(errorMessage);
+      console.error(errorMessage);
     });
 
   }

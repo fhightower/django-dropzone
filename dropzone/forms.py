@@ -30,16 +30,10 @@ class DropzoneInput(TemplateBasedInput, forms.TextInput):
     template_name = 'dropzone/dropzone.html'
 
     def __init__(self, *args, **kwargs):
-        self.acceptedFiles = kwargs.pop('acceptedFiles', '')
-        self.maxFilesize = kwargs.pop('maxFilesize', '')
-        self.upload_path = kwargs.pop('upload_path', '')
-        self.placeholder = kwargs.pop('placeholder', '')
+        self.dropzone_config = kwargs.pop("dropzone_config", {})
         super(DropzoneInput, self).__init__(*args, **kwargs)
 
     def get_context_data(self, name, value, attrs):
         context = super(DropzoneInput, self).get_context_data(name, value, attrs)
-        context['acceptedFiles'] = self.acceptedFiles
-        context['maxFilesize'] = self.maxFilesize
-        context['upload_path'] = self.upload_path
-        context['placeholder'] = self.placeholder
+        context["dropzone_config"] = self.dropzone_config
         return context
