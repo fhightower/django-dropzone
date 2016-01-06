@@ -12,7 +12,8 @@ class UploadView(View):
         from django.core.files.storage import default_storage
 
         field_name, tmp_file = self.request.FILES.items()[0]
-        with default_storage.open("user_uploads/" + tmp_file.name + "-" + str(datetime.datetime.now()), "wb+") as f:
+        # TODO: Use "T" as date and time separator instead of space.
+        with default_storage.open("user_uploads/" + str(datetime.datetime.now()) + "-" + tmp_file.name, "wb+") as f:
             for chunk in tmp_file.chunks():
                 f.write(chunk)
 

@@ -6,8 +6,9 @@ class ExampleForm(forms.Form):
     images = forms.FileField(
         widget=DropzoneInput(dropzone_config={
             "maxFilesize": 10,
-            "acceptedFiles": "image/*",
+            # "acceptedFiles": "image/*",
             "url": '/file_uploads/upload/',
-            "placeholder": 'Drop an image here!'
+            "placeholder": 'Drop an image here!',
+            "addRemoveLinks": True
         })
     )
