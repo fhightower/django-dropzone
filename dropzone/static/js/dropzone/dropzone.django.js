@@ -31,7 +31,9 @@ $(function() {
     // File was successfully uploaded
     dropzone.on("success", function(file, response) {
       var file_url = JSON.parse(response)["file_url"];
-      inputField.val(inputField.val() + "," + file_url);
+      var val = inputField.val();
+      var comma = val === "" ? "" : ",";
+      inputField.val(val + comma + file_url);
     });
 
     // Show error messages
