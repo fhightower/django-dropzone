@@ -1,1 +1,1 @@
-__author__ = 'chrisvilla, Ats Nisov (Rubinous@github.com)'
+__author__ = 'chrisvilla, Ats Nisov (github.com/Rubinous)'
