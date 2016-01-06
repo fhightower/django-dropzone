@@ -7,7 +7,7 @@ class ExampleForm(forms.Form):
         widget=DropzoneInput(dropzone_config={
             "maxFilesize": 10,
             "acceptedFiles": "image/*",
-            "url": '/upload/file',
+            "url": '/file_uploads/upload/',
             "placeholder": 'Drop an image here!'
         })
     )
