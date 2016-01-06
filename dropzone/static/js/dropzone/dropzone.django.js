@@ -2,7 +2,14 @@
 
 var djDropzones = [];
 
+
 $(function() {
+  var camelize = function (str) {
+    return str.replace(/[\-_](\w)/g, function (match) {
+      return match.charAt(1).toUpperCase();
+    });
+  };
+
   var djDropzoneEls = $('.djdropzone');
 
   djDropzoneEls.each(function(i, el) {
@@ -33,6 +40,8 @@ $(function() {
     });
 
     djDropzones.push(dropzone);
+
+    Dropzone.options[camelize(el.id)] = false;
 
   });
 
