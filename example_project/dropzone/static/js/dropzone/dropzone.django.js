@@ -1,39 +1,39 @@
 // For CORS see https://github.com/enyo/dropzone/issues/33
 
-var djDropzone;
+var djDropzones = [];
 
 $(function() {
+  var djDropzoneEls = $('.djdropzone');
 
-  Dropzone.autoDiscover = false;
+  djDropzoneEls.each(function(i, el) {
+    var $el = $(el);
+    var dropzoneConfig = $el.data("dropzone-config") || {};
+    var fieldName = $el.data("field-name");
+    var inputField = $el.parent().find("[name=" + fieldName + "]");
 
-  if ($('div.dropzone').length > 0){
+    $el.addClass("dropzone");
 
-    //  Initiate dropzone
-    djDropzone = new Dropzone("div.dropzone", {
-      url: $(".dropzone").data("upload-path"),
-      acceptedFiles: $(".dropzone").data("acceptedfiles"),
-      maxFilesize: $(".dropzone").data("maxfilesize")
-    });
-
-    var dropzone_url = $("#id_" + djDropzone.element.getAttribute("name"));
+    // Initiate Dropzone
+    var dropzone = new Dropzone(el, dropzoneConfig);
 
     // Add CSRF token to post
-    djDropzone.on("sending", function(file, xhr, formData) {
+    dropzone.on("sending", function(file, xhr, formData) {
       xhr.setRequestHeader("X-CSRFToken", $.cookie('csrftoken'));
     });
 
-    // File was successfully uploaded 
-    djDropzone.on("success", function(file, response) {
+    // File was successfully uploaded
+    dropzone.on("success", function(file, response) {
       var file_url = JSON.parse(response)["file_url"];
-      console.log('File uploaded to url: ' + file_url);
-      dropzone_url.val(file_url);
+      inputField.val(inputField.val() + "," + file_url);
     });
 
     // Show error messages
-    djDropzone.on("error", function(file, errorMessage) {
-      alert(errorMessage);
+    dropzone.on("error", function(file, errorMessage) {
+      console.error(errorMessage);
     });
 
-  }
+    djDropzones.push(dropzone);
+
+  });
 
 });
