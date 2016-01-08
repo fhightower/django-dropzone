@@ -6,6 +6,19 @@ var djDropzones = [];
 Dropzone.prototype.addExistingFiles = function (fileUrls) {
   var _this = this;
 
+  _this.loadingExistingFiles = fileUrls;
+
+  var removeLoader = function (fileUrl) {
+    var i = _this.loadingExistingFiles.indexOf(fileUrl);
+    if (i >= 0) {
+      _this.loadingExistingFiles.splice(i, 1);
+    }
+
+    if (_this.loadingExistingFiles.length == 0) {
+      _this.$loadingEl.remove();
+    }
+  };
+
   $.each(fileUrls, function(i, fileUrl) {
     var parts = fileUrl.split("/");
     var fileName = parts[parts.length - 1];
@@ -39,6 +52,8 @@ Dropzone.prototype.addExistingFiles = function (fileUrls) {
 
       _this._updateMaxFilesReachedClass();
 
+      removeLoader(fileUrl);
+
       return true;
     };
     xhr.send();
@@ -60,11 +75,14 @@ $(function() {
     var dropzoneConfig = $el.data("dropzone-config") || {};
     var fieldName = $el.data("field-name");
     var inputField = $el.parent().find("[name=" + fieldName + "]");
+    var $loadingEl = $el.find(".djdropzone-loading");
 
     $el.addClass("dropzone");
 
     // Initiate Dropzone
     var dropzone = new Dropzone(el, dropzoneConfig);
+
+    dropzone.$loadingEl = $loadingEl;
 
     // Add existing files.
     if (inputField.val().length > 0) {
