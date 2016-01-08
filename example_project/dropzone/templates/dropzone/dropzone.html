@@ -1,5 +1,5 @@
 <div id="djdropzone-{{ uid }}" class="djdropzone" data-field-name="{{ name }}" data-dropzone-config="{{ dropzone_config_json }}">
-  <div class="djdropzone-loading" style="position: absolute; margin-top: -10px;">Loading previously uploaded files...</div>
+  {% if value %}<div class="djdropzone-loading" style="position: absolute; margin-top: -10px;">Loading previously uploaded files...</div>{% endif %}
 
   <div class="vertical-align">
 
