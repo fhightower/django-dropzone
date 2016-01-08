@@ -8,7 +8,6 @@ class ExampleForm(forms.Form):
             "maxFilesize": 10,
             # "acceptedFiles": "image/*",
             "url": '/file_uploads/upload/',
-            "placeholder": 'Drop an image here!',
             "addRemoveLinks": True
         })
     )
