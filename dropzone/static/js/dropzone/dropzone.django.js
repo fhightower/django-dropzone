@@ -3,65 +3,64 @@
 var djDropzones = [];
 
 
-Dropzone.prototype.addExistingFiles = function (fileUrls) {
-  var _this = this;
+$(function() {
+  var addExistingFiles = function (dropzone, fileUrls) {
+    // TODO: It might be wiser to implement this using fake file objects.
 
-  _this.loadingExistingFiles = fileUrls;
+    dropzone.loadingExistingFiles = fileUrls;
 
-  var removeLoader = function (fileUrl) {
-    var i = _this.loadingExistingFiles.indexOf(fileUrl);
-    if (i >= 0) {
-      _this.loadingExistingFiles.splice(i, 1);
-    }
-
-    if (_this.loadingExistingFiles.length == 0) {
-      _this.$loadingEl.remove();
-    }
-  };
-
-  $.each(fileUrls, function(i, fileUrl) {
-    var parts = fileUrl.split("/");
-    var fileName = parts[parts.length - 1];
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", fileUrl);
-    xhr.responseType = "blob";
-    xhr.onload = function() {
-      var file = xhr.response;
-      file.upload = {
-        progress: 0,
-        total: file.size,
-        bytesSent: 0
-      };
-      file.accepted = true;
-      file.status = Dropzone.ADDED;
-      file.name = fileName;
-      file.type = "image/jpeg";
-      file.fileUrl = fileUrl;
-
-      _this.files.push(file);
-      _this.emit("addedfile", file);
-      _this._enqueueThumbnail(file);
-
-      file.status = Dropzone.SUCCESS;
-      file.previewElement.classList.add("dz-success");
-      file.previewElement.classList.add("dz-complete");
-      if (file._removeLink) {
-        file._removeLink.textContent = _this.options.dictRemoveFile;
+    var removeLoader = function (fileUrl) {
+      var i = dropzone.loadingExistingFiles.indexOf(fileUrl);
+      if (i >= 0) {
+        dropzone.loadingExistingFiles.splice(i, 1);
       }
 
-      _this._updateMaxFilesReachedClass();
-
-      removeLoader(fileUrl);
-
-      return true;
+      if (dropzone.loadingExistingFiles.length == 0) {
+        dropzone.$loadingEl.remove();
+      }
     };
-    xhr.send();
-  });
-};
 
+    $.each(fileUrls, function(i, fileUrl) {
+      var parts = fileUrl.split("/");
+      var fileName = parts[parts.length - 1];
 
-$(function() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", fileUrl);
+      xhr.responseType = "blob";
+      xhr.onload = function() {
+        var file = xhr.response;
+        file.upload = {
+          progress: 0,
+          total: file.size,
+          bytesSent: 0
+        };
+        file.accepted = true;
+        file.status = Dropzone.ADDED;
+        file.name = fileName;
+        file.type = "image/jpeg";
+        file.fileUrl = fileUrl;
+
+        dropzone.files.push(file);
+        dropzone.emit("addedfile", file);
+        dropzone._enqueueThumbnail(file);
+
+        file.status = Dropzone.SUCCESS;
+        file.previewElement.classList.add("dz-success");
+        file.previewElement.classList.add("dz-complete");
+        if (file._removeLink) {
+          file._removeLink.textContent = dropzone.options.dictRemoveFile;
+        }
+
+        dropzone._updateMaxFilesReachedClass();
+
+        removeLoader(fileUrl);
+
+        return true;
+      };
+      xhr.send();
+    });
+  };
+
   var camelize = function (str) {
     return str.replace(/[\-_](\w)/g, function (match) {
       return match.charAt(1).toUpperCase();
@@ -86,7 +85,7 @@ $(function() {
 
     // Add existing files.
     if (inputField.val().length > 0) {
-      dropzone.addExistingFiles(inputField.val().split(","));
+      addExistingFiles(dropzone, inputField.val().split(","));
     }
 
     // Add CSRF token to post
