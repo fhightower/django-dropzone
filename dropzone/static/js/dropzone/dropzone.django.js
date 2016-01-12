@@ -191,8 +191,9 @@ window.DjDropzone.prototype.addPreviouslyUploadedFile = function(fileUrl) {
   var fileName = parts[parts.length - 1];
 
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", fileUrl);
+  xhr.open("GET", "//" + fileUrl.split("//")[1]);
   xhr.responseType = "blob";
+
   xhr.onload = function() {
     var file = xhr.response;
     file.upload = {
