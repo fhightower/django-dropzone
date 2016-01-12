@@ -92,8 +92,9 @@ window.DjDropzone.prototype.pushFileUrl = function(fileUrl) {
 
 window.DjDropzone.prototype.removeFileUrl = function(fileUrl) {
   var fileUrls = this.getFileUrls();
+  var i = fileUrls.indexOf(fileUrl);
 
-  if (fileUrls.indexOf(fileUrl) >= 0) {
+  if (i >= 0) {
     fileUrls.splice(i, 1);
     this.$input.val(fileUrls.join());
   }
