@@ -53,9 +53,9 @@ window.DjDropzone = function(el) {
   this.readyStates = [Dropzone.SUCCESS, Dropzone.ERROR, Dropzone.CANCELED];
 
   this.$el = $(el);
-  this.$dropzone = this.$el.find(".dropzone");
+  this.$dropzone = this.$el.find(".djdropzone-dropzone");
   this.fieldName = this.$el.data("field-name");
-  this.$input = this.$el.find('input[name="' + this.fieldName + '"');
+  this.$input = this.$el.find('input[name="' + this.fieldName + '"]');
   this.$loading = this.$el.find(".djdropzone-loading");
   this.dropzoneConfig = this.$el.data("dropzone-config") || {};
 
@@ -102,7 +102,7 @@ window.DjDropzone.prototype.initDropzone = function() {
   var self = this;
 
   if (this.$dropzone.length != 1) {
-    throw "Too many `.dropzone` elements in this `.djdropzone`."
+    throw "Must have exactly one `.djdropzone-dropzone` elements in this `.djdropzone`."
   }
 
   this.dropzoneConfig["init"] = function() {
@@ -131,9 +131,11 @@ window.DjDropzone.prototype.initDropzone = function() {
     });
   };
 
-  this.dropzone = new Dropzone(this.$dropzone, this.dropzoneConfig);
-
   window.Dropzone.options[DjDropzone.camelize(this.$dropzone[0].id)] = false;
+
+  this.$dropzone.addClass("dropzone");
+
+  this.dropzone = new Dropzone(this.$dropzone[0], this.dropzoneConfig);
 };
 
 window.DjDropzone.prototype.initPreviouslyUploadedFiles = function() {
