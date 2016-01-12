@@ -1,3 +1,8 @@
+/*
+Version: 1.0.0.
+Authors: Ats Nisov (github.com/Rubinous), chrisvilla
+ */
+
 // For CORS see https://github.com/enyo/dropzone/issues/33
 
 
