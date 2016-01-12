@@ -33,15 +33,16 @@ window.DjDForm = function ($el, djDropzones) {
 window.DjDForm.prototype.updateFormSubmitDisable = function() {
   // Updates the disable on the submit button to match the object's state.
 
+  var notDisabled = true;
+
   for (var j = 0; j < this.djDropzones.length; j += 1) {
     var djDropzone = this.djDropzones[j];
-
-    var disabled = !(djDropzone.isReady());
-
-    this.$submit.each(function(i, submitEl) {
-      submitEl.disabled = disabled;
-    });
+    notDisabled == notDisabled && djDropzone.isReady();
   }
+
+  this.$submit.each(function(i, submitEl) {
+    submitEl.disabled = !notDisabled;
+  });
 };
 
 
@@ -156,8 +157,9 @@ window.DjDropzone.prototype.isReady = function () {
   var ready = true;
   for (var i = 0; i < this.dropzone.files.length; i += 1) {
     var file = this.dropzone.files[i];
-      ready &= this.readyStates.indexOf(file.status) >= 0;
+    ready = ready && (this.readyStates.indexOf(file.status) >= 0);
   }
+  return ready;
 };
 
 window.DjDropzone.prototype.updateLoader = function () {
