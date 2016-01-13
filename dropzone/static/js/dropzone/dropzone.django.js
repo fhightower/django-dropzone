@@ -163,7 +163,7 @@ window.DjDropzone.prototype.isReady = function () {
   var ready = true;
   for (var i = 0; i < this.dropzone.files.length; i += 1) {
     var file = this.dropzone.files[i];
-    ready = ready && (this.readyStates.indexOf(file.status) >= 0);
+    ready =  ready && (file.djDFakeFile || (this.readyStates.indexOf(file.status) >= 0));
   }
   return ready;
 };
@@ -196,6 +196,9 @@ window.DjDropzone.prototype.addPreviouslyUploadedFile = function(fileUrl) {
 
   xhr.onload = function() {
     var file = xhr.response;
+
+    file.djDFakeFile = true;
+
     file.upload = {
       progress: 0,
       total: file.size,
