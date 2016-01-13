@@ -1,5 +1,5 @@
 /*
-Version: 1.1.0.
+Version: 1.2.0.
 Authors: Ats Nisov (github.com/Rubinous), chrisvilla
  */
 
@@ -42,7 +42,7 @@ window.DjDForm.prototype.updateFormSubmitDisable = function() {
 
   for (var j = 0; j < this.djDropzones.length; j += 1) {
     var djDropzone = this.djDropzones[j];
-    notDisabled == notDisabled && djDropzone.isReady();
+    notDisabled = notDisabled && djDropzone.isReady();
   }
 
   this.$submit.each(function(i, submitEl) {
