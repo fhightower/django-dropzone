@@ -19,17 +19,33 @@ window.DjDForm = function ($el, djDropzones, opts) {
   }
 
   this.$el = $el;
-  this.$submit = this.$el.find('input[type="submit"]');
+  this.$submit = this.$el.find('input[type="submit"]').not(".djdropzone-submit-warning input");
+  this.$submitWarning = this.$el.find(".djdropzone-submit-warning");
 
   this.djDropzones = djDropzones;
 
   this.opts = $.extend({}, {
-    disableSubmitWhileUploading: false
+    disableSubmitWhileUploading: false,
+    submitWarningWhileUploading: false
   }, this.$el.data("djdropzone-djdform-opts"), opts || {});
+
+  this.$submit.on("click", function (event) {
+    if (self.opts.submitWarningWhileUploading && !self.isReady()) {
+      event.stopImmediatePropagation();
+      event.preventDefault();
+
+      self.$submitWarning.removeClass("hidden");
+      self.$submit.addClass("hidden");
+    }
+  });
 
   var addfileCompleteRemovedfileHandler = function(args) {
     if (self.opts.disableSubmitWhileUploading) {
       self.updateFormSubmitDisable();
+    }
+
+    if (self.opts.submitWarningWhileUploading) {
+      self.updateSubmitWarning();
     }
   };
 
@@ -41,20 +57,33 @@ window.DjDForm = function ($el, djDropzones, opts) {
   }
 };
 
+window.DjDForm.prototype.isReady = function() {
+  var ready = true;
+
+  for (var j = 0; j < this.djDropzones.length; j += 1) {
+    var djDropzone = this.djDropzones[j];
+    ready = ready && djDropzone.isReady();
+  }
+
+  return ready;
+};
+
+window.DjDForm.prototype.updateSubmitWarning = function() {
+  if (this.isReady()) {
+    this.$submit.removeClass("hidden");
+    this.$submitWarning.addClass("hidden");
+  }
+};
+
 window.DjDForm.prototype.updateFormSubmitDisable = function() {
   /*
   Updates the disable on the submit button to match the object's state.
    */
 
-  var notDisabled = true;
-
-  for (var j = 0; j < this.djDropzones.length; j += 1) {
-    var djDropzone = this.djDropzones[j];
-    notDisabled = notDisabled && djDropzone.isReady();
-  }
+  var self = this;
 
   this.$submit.each(function(i, submitEl) {
-    submitEl.disabled = !notDisabled;
+    submitEl.disabled = !self.isReady();
   });
 };
 
