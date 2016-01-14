@@ -72,6 +72,7 @@ window.DjDropzone = function(el) {
   this.initPreviouslyUploadedFiles();
 };
 
+
 window.DjDropzone.camelize = function (str) {
   return str.replace(/[\-_](\w)/g, function (match) {
     return match.charAt(1).toUpperCase();
@@ -190,56 +191,37 @@ window.DjDropzone.prototype.addPreviouslyUploadedFile = function(fileUrl) {
   var parts = fileUrl.split("/");
   var fileName = parts[parts.length - 1];
 
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "//" + fileUrl.split("//")[1]);
-  xhr.responseType = "blob";
+  var fakeFile = new File([], fileName);
 
-  xhr.onload = function() {
-    var file = xhr.response;
+  fakeFile.djDFakeFile = true;
 
-    file.djDFakeFile = true;
-
-    file.upload = {
-      progress: 0,
-      total: file.size,
-      bytesSent: 0
-    };
-    file.accepted = true;
-    file.status = Dropzone.ADDED;
-    file.name = fileName;
-    file.type = "image/jpeg";
-    file.fileUrl = fileUrl;
-
-    self.dropzone.files.push(file);
-    self.dropzone.emit("addedfile", file);
-    self.dropzone._enqueueThumbnail(file);
-
-    file.status = Dropzone.SUCCESS;
-    file.previewElement.classList.add("dz-success");
-    file.previewElement.classList.add("dz-complete");
-    if (file._removeLink) {
-      file._removeLink.textContent = self.dropzone.options.dictRemoveFile;
-    }
-
-    self.dropzone._updateMaxFilesReachedClass();
-
-    var i = self.initialFileUrlsLoading.indexOf(fileUrl);
-    if (i >= 0) {
-      self.initialFileUrlsLoading.splice(i, 1);
-    }
-
-    self.updateLoader();
-
-    return true;
+  fakeFile.upload = {
+    progress: 100,
+    total: 0,
+    bytesSent: 0
   };
+  fakeFile.accepted = true;
+  fakeFile.processing = true;  // This is never set to `false` and I believe not even used for anything.
+  fakeFile.status = Dropzone.SUCCESS;
+  fakeFile.name = fileName;
+  fakeFile.fileUrl = fileUrl;
 
-  this.initialFileUrlsLoading.push(fileUrl);
+  this.dropzone.files.push(fakeFile);
 
-  self.updateLoader();
+  this.dropzone.emit("addedfile", fakeFile);
 
-  xhr.send();
+  fakeFile.previewElement.classList.add("dz-success");
+  fakeFile.previewElement.classList.add("dz-complete");
+  if (fakeFile._removeLink) {
+    fakeFile._removeLink.textContent = self.dropzone.options.dictRemoveFile;
+  }
 
-  return xhr;
+  this.dropzone._updateMaxFilesReachedClass();
+
+  // TODO: Hiding the size, because it shows "0 b". Implement showing correct size.
+  $(fakeFile.previewElement).find(".dz-size span").addClass("invisible");
+
+  this.dropzone.createThumbnailFromUrl(fakeFile, fileUrl, null, "anonymous");
 };
 
 
