@@ -11,20 +11,26 @@ window.djDForms = [];
 
 
 // Class
-window.DjDForm = function ($el, djDropzones) {
+window.DjDForm = function ($el, djDropzones, opts) {
   var self = this;
 
   if ($el.length != 1) {
     console.error("Couldn't create DjDForm.");
   }
 
-  this.djDropzones = djDropzones;
-
   this.$el = $el;
   this.$submit = this.$el.find('input[type="submit"]');
 
+  this.djDropzones = djDropzones;
+
+  this.opts = $.extend({}, {
+    disableSubmitWhileUploading: false
+  }, this.$el.data("djdropzone-djdform-opts"), opts || {});
+
   var addfileCompleteRemovedfileHandler = function(args) {
-    self.updateFormSubmitDisable();
+    if (self.opts.disableSubmitWhileUploading) {
+      self.updateFormSubmitDisable();
+    }
   };
 
   for (var i = 0; i < this.djDropzones.length; i += 1) {
@@ -36,7 +42,9 @@ window.DjDForm = function ($el, djDropzones) {
 };
 
 window.DjDForm.prototype.updateFormSubmitDisable = function() {
-  // Updates the disable on the submit button to match the object's state.
+  /*
+  Updates the disable on the submit button to match the object's state.
+   */
 
   var notDisabled = true;
 
