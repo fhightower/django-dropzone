@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from django import forms
 from django.template import loader, Context
@@ -9,7 +10,7 @@ class DropzoneInput(forms.TextInput):
 
     def __init__(self, *args, **kwargs):
         self.dropzone_config = kwargs.pop("dropzone_config", {})
-        self.uid = "asdfsdfa"  # TODO: Use proper uid.
+        self.uid = uuid.uuid4()
         super(DropzoneInput, self).__init__(*args, **kwargs)
 
     def render(self, name, value, attrs=None):
