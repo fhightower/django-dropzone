@@ -6,15 +6,25 @@
 <head>
 
   <link href="{% static "css/dropzone/dropzone.css" %}" type="text/css" rel="stylesheet" />
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 
   <title>Example Page</title>
 </head>
 
 <body>
 
-  {{ form.as_p }}
+  <form data-djdropzone-djdform-opts="{&quot;submitWarningWhileUploading&quot;: true}">
+    {{ form.as_p }}
+
+    <div class="djdropzone-submit-warning hidden">
+      <p class="text-danger">Warning! Some files are still uploading and they won't be part of the submission before they've finished.</p>
+      <input class="btn btn-default" type="submit" value="Submit Anyway" />
+    </div>
+    <input class="btn btn-default" type="submit" value="Submit" />
+  </form>
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="{% static "js/dropzone/dropzone.js" %}"></script>
   <script src="{% static "js/dropzone/dropzone.django.js" %}"></script>
   <script src="{% static "js/jquery.cookie.js" %}"></script>
