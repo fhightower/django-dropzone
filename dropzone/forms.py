@@ -8,6 +8,10 @@ from django.template import loader, Context
 class DropzoneInput(forms.TextInput):
     template_name = 'dropzone/dropzone.html'
 
+    class Media:
+        js = ("js/dropzone/dropzone.js", "js/dropzone/django-dropzone.js",)
+        css = {"all": ("css/dropzone/basic.css", "css/dropzone/dropzone.css", "css/dropzone/django-dropzone.css",)}
+
     def __init__(self, *args, **kwargs):
         self.dropzone_config = kwargs.pop("dropzone_config", {})
         self.uid = uuid.uuid4()

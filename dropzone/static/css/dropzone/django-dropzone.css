@@ -1,0 +1,5 @@
+.djdropzone .djdropzone-dropzone.dropzone.dz-started .dz-message {
+    display: block;
+    margin: 0;
+    text-align: left;
+}
