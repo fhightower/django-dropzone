@@ -1,65 +1,41 @@
-*Please note, this is messy and unfinished. It might not even work properly right now. It you want to improve it, go ahead and submit a pull request.*
+*Please note, this is messy and unfinished, but the it works at least in the `example_project` setup.*
 
 django-dropzone
 =========================================
 
-A simple django widget for dropzone.js
-
-Allows you to use a dropzone.js uploader instead of the traditional HTML file upload widget.
+A simple Django widget for [Dropzonejs](http://www.dropzonejs.com/) ([http://www.dropzonejs.com/](http://www.dropzonejs.com/)).
 
 Not yet pip installable.
 
-Completely skinable.
+Depends on Bootstrapm, jQuery and jquery.cookie.
 
 
 Usage
 =====
 
-An example form:
+
+For usage, see the `example_project` Django project.
+
+The beef is the `DropzoneInput`, which can be used as a form field. Example:
 ::
 
-    class ExampleForm(forms.Form):
-        image = forms.FileField(
-                    widget=DropzoneInput(
-                        maxFilesize=10,
-                        acceptedFiles="image/*",
-                        upload_path='/upload/file'
-                    )
-                )
-
-
-Load in the following in your template:
-::
-
-  <link href="{% static "css/dropzone/dropzone.css" %}" type="text/css" rel="stylesheet" />
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-  <script src="{% static "js/dropzone/dropzone.js" %}"></script>
-  <script src="{% static "js/dropzone/dropzone.django.js" %}"></script>
-
-
-
-**See the example project for more detail. I've not got around to writing this more thoroughly yet.**
-
-
-Notes
-=====
-Currently only supports upload of one file at a time. Can be easily patched to support comma separated lists in the file_url input field.
-
-Server must respond with a JSON dict on the file POST url. This dict should contain a "file_url" string which is the location of the file. i.e.
-::
-
-    class UploadFileView(View):
-        def post(self, request, *args, **kwargs):
-            posted_file = request.FILES.get('file')
-
-            ...
-            save file
-            ...
-
-            response = json.dumps({
-                "file_url": path
+    from django.forms import Form
+    from dropzone.forms import DropzoneInput
+    
+    
+    class ExampleForm(Form):
+        images = forms.FileField(
+            widget=DropzoneInput(dropzone_config={
+                "maxFilesize": 10,
+                "acceptedFiles": "image/*",
+                "url": '/file_uploads/upload/',
+                "addRemoveLinks": True
             })
+        )
 
-            return HttpResponse(response)
-            
+You can pass configuration to Dropzonejs through the `dropzone_configuration` attribute. Refer to [http://www.dropzonejs.com/#configuration](http://www.dropzonejs.com/#configuration) available configuration.
+
+You'll also need to add a bunch of static files somewhere in your html. Utilize `form.media` to include the main css and js. Bootstrap and jQuery dependencies are not included though. See example.html for an example.
+
+The hardest part in using this, is that you'll need to implement an endpoint that can receive one file in an HTTP POST request and respond with json like `{"file_url": file_url}` where `file_url` is a the URL pointing to where the file can retrieved from.
+Example: Create a Django view, handling that reads the file from `request.FILES` and uploads it to Amazon S3, grab the URL to the file from the S3 uploader and return `HttpResponse({"file_url": file_url})`.
