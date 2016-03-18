@@ -5,7 +5,7 @@
 <html>
 <head>
 
-  <link href="{% static "css/dropzone/dropzone.css" %}" type="text/css" rel="stylesheet" />
+  {{ form.media.css }}
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
 
   <title>Example Page</title>
@@ -25,8 +25,7 @@
 
   <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-  <script src="{% static "js/dropzone/dropzone.js" %}"></script>
-  <script src="{% static "js/dropzone/dropzone.django.js" %}"></script>
+  {{ form.media.js }}
   <script src="{% static "js/jquery.cookie.js" %}"></script>
   <script src="{% static "js/example.js" %}"></script>
 
