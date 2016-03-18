@@ -62,3 +62,4 @@ Server must respond with a JSON dict on the file POST url. This dict should cont
             })
 
             return HttpResponse(response)
+            
