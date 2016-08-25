@@ -2,7 +2,7 @@ import json
 import uuid
 
 from django import forms
-from django.template import loader, Context
+from django.template import loader
 
 
 class DropzoneInput(forms.TextInput):
@@ -21,12 +21,12 @@ class DropzoneInput(forms.TextInput):
         if value is None:
             value = ''
 
-        c = Context({
+        c = {
             "dropzone_config_json": json.dumps(self.dropzone_config),
             "name": name,
             "value": value,
             "uid": self.uid
-        })
+        }
 
         t = loader.get_template(self.template_name)
 
