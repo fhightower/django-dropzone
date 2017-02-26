@@ -1,10 +1,10 @@
 from django.views.generic import FormView
 
-from forms import ExampleForm
+from .forms import ExampleForm
 
 
 class ExampleFormView(FormView):
-    template_name = 'example.html'
+    template_name = 'example_project/example.html'
     form_class = ExampleForm
 
     def get_initial(self):
